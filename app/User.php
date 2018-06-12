@@ -40,10 +40,10 @@ class User extends Authenticatable
         // confirming that it is not you
         $its_me = $this->id == $userId;
 
-    if ($exist || $its_me) {
+      if ($exist || $its_me) {
         // do nothing if already following
         return false;
-    } else {
+      } else {
         // follow if not following
         $this->followings()->attach($userId);
         return true;
@@ -58,15 +58,15 @@ class User extends Authenticatable
         $its_me = $this->id == $userId;
 
 
-    if ($exist && !$its_me) {
+      if ($exist && !$its_me) {
         // stop following if following
         $this->followings()->detach($userId);
         return true;
-    } else {
+      } else {
         // do nothing if not following
         return false;
+      }
     }
-}
 
 
     public function is_following($userId) {
@@ -81,4 +81,14 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function feed_microposts()
+    {
+        $follow_user_ids = $this->followings()-> pluck('users.id')->toArray();
+        $follow_user_ids[] = $this->id;
+        return Micropost::whereIn('user_id', $follow_user_ids);
+    }
+    
+    
 }
+
