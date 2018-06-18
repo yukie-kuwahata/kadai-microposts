@@ -15,7 +15,9 @@
             <div>
                  <label class="button-inline">
                   @include('user_follow.favorite_button', ['micropost' => $micropost])
-                  </label>
+                     <div class= $count_favorites = $users->favorites()->count($favorite_id);>
+                     </div> 
+                 </label>
     
                 <label class="button-inline">
                 @if (Auth::user()->id == $micropost->user_id)
